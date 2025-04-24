@@ -453,7 +453,9 @@ void Snapshotter::subscribe(
 
   auto sub = create_generic_subscription(
     topic_details.name,
-    topic_endpoint_info.topic_type(),
+    topic_details.type,
+    // TODO Switch to using topic type from topic_endpoint_info. Would require removal of topic_details.type
+    // topic_endpoint_info.topic_type(),
     qos_profile,
     std::bind(&Snapshotter::topicCb, this, _1, queue),
     opts
