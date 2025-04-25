@@ -275,6 +275,8 @@ Snapshotter::Snapshotter(const rclcpp::NodeOptions & options)
       std::chrono::duration(1s),
       std::bind(&Snapshotter::pollTopics, this));
   }
+
+  RCLCPP_INFO(get_logger(), "Node initialized");
 }
 
 Snapshotter::~Snapshotter()
@@ -433,10 +435,28 @@ void Snapshotter::subscribe(
   opts.topic_stats_options.state = rclcpp::TopicStatisticsState::Enable;
   opts.topic_stats_options.publish_topic = topic_details.name + "/statistics";
 
+  std::vector<rclcpp::TopicEndpointInfo> info;
+
+  while (info.empty()) {
+    RCLCPP_INFO_STREAM(get_logger(), "Waiting for QoS info of topic: " << topic_details.name);
+    info = this->get_publishers_info_by_topic(topic_details.name);
+    std::this_thread::sleep_for(std::chrono::seconds{1});;    
+  }
+
+  // // Get endpoint info for the first registered publisher
+  rclcpp::TopicEndpointInfo topic_endpoint_info = info[0];
+
+  // Set QoS
+  auto qos_profile = rclcpp::QoS(1);
+  qos_profile.durability(topic_endpoint_info.qos_profile().durability());
+  qos_profile.reliability(topic_endpoint_info.qos_profile().reliability());
+
   auto sub = create_generic_subscription(
     topic_details.name,
     topic_details.type,
-    rclcpp::QoS{10},
+    // TODO Switch to using topic type from topic_endpoint_info. Would require removal of topic_details.type
+    // topic_endpoint_info.topic_type(),
+    qos_profile,
     std::bind(&Snapshotter::topicCb, this, _1, queue),
     opts
   );

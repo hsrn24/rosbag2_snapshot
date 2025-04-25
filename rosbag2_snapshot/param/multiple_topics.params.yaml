@@ -1,13 +1,81 @@
 /**:
   ros__parameters:
-    topics: ["/lidar1/points_raw", "/lidar2/points_raw", "/camera1/image"]
+    default_duration_limit: 600.0          # [Optional, default=-1] Maximum time difference between newest and oldest message in seconds
+    default_memory_limit: 10240.0         # [Optional, default=-1] Maximum memory used by messages in each topic's buffer, in MB
+    topics: 
+     - "/robo_cart/scan"
+     - "/robo_cart/odometry"
+     - "/robo_cart/landmark"
+     - "/robo_cart/imu"
+     - "/robo_cart/map"
+     - "/tf"
+     - "/robo_cart/destinations_keeper/destinations_pose_array"
+     - "/robo_cart/alarm_manager/active_alarms"
+     - "/robo_cart/rcp_keyboard_events"
+     - "/robo_cart/global_costmap/published_footprint"
+     - "/robo_cart/local_costmap/costmap"
+     - "/robo_cart/global_costmap/costmap"
+     - "/robo_cart/trajectory_node_list"
+     - "/robo_cart/plan"
+     - "/robo_cart/apriltag_landmarks_visualization"
     topic_details:
-      /lidar1/points_raw:
-        type: "sensor_msgs/msg/PointCloud2"
-      /lidar2/points_raw:
-        type: "sensor_msgs/msg/PointCloud2"
-        duration: 10.0
-      /camera1/image:
-        type: "sensor_msgs/msg/Image"
-        duration: 15.0
-        memory: 1024.0
+      /robo_cart/scan:
+        type: "sensor_msgs/msg/LaserScan"
+        duration: 600.0
+        memory: -1.0
+      /robo_cart/odometry:
+        type: "robo_cart_msgs/msg/OdometryNoCovariance"
+        duration: 600.0
+        memory: -1.0
+      /robo_cart/landmark:
+        type: "cartographer_ros_msgs/msg/LandmarkList"
+        duration: 600.0
+        memory: -1.0
+      /robo_cart/imu:
+        type: "robo_cart_msgs/msg/ImuNoCovariance"
+        duration: 600.0
+        memory: -1.0
+      /robo_cart/map:
+        type: "nav_msgs/msg/OccupancyGrid"
+        duration: 600.0
+        memory: -1.0
+      /tf:
+        type: "tf2_msgs/msg/TFMessage"
+        duration: 600.0
+        memory: -1.0
+      /robo_cart/destinations_keeper/destinations_pose_array:
+        type: "geometry_msgs/msg/PoseArray"
+        duration: 600.0
+        memory: -1.0
+      /robo_cart/alarm_manager/active_alarms:
+        type: "robo_cart_msgs/msg/AlarmArray"
+        duration: 600.0
+        memory: -1.0
+      /robo_cart/rcp_keyboard_events:
+        type: "robo_cart_msgs/msg/StreamDeckEvent"
+        duration: 600.0
+        memory: -1.0
+      /robo_cart/global_costmap/published_footprint:
+        type: "geometry_msgs/msg/PolygonStamped"
+        duration: 600.0
+        memory: -1.0
+      /robo_cart/local_costmap/costmap:
+        type: "nav_msgs/msg/OccupancyGrid"
+        duration: 600.0
+        memory: -1.0
+      /robo_cart/global_costmap/costmap:
+        type: "nav_msgs/msg/OccupancyGrid"
+        duration: 600.0
+        memory: -1.0
+      /robo_cart/trajectory_node_list:
+        type: "visualization_msgs/msg/MarkerArray"
+        duration: 600.0
+        memory: -1.0
+      /robo_cart/plan:
+        type: "nav_msgs/msg/Path"
+        duration: 600.0
+        memory: -1.0
+      /robo_cart/apriltag_landmarks_visualization:
+        type: "visualization_msgs/msg/MarkerArray"
+        duration: 600.0
+        memory: -1.0
